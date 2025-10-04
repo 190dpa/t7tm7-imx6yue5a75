@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot de Mensagens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Tela de Login (inicialmente visível) -->
+    <div id="login-view" class="view-container">
+        <main class="login-container">
+            <h1>Bem-vindo!</h1>
+            <p style="color: #ccc; margin-bottom: 2rem;">Para continuar, faça login com sua conta do Discord.</p>
+            <a href="/auth/discord" class="login-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Logo"> Entrar com Discord
+            </a>
+        </main>
+    </div>
+
+    <!-- Tela da Aplicação (inicialmente oculta) -->
+    <div id="app-view" class="view-container hidden">
+        <div class="user-profile">
+            <img id="user-avatar" src="" alt="Avatar do usuário">
+            <span id="user-username">Carregando...</span>
+        </div>
+        <a href="/logout" class="logout-button" title="Sair">🚪</a>
+        <div class="app-layout">
+            <main>
+                <!-- Abas para alternar entre as funcionalidades -->
+                <div id="main-tabs" class="tabs">
+                    <button class="tab-btn active" data-tab="incorporate">Incorporar Bot</button>
+                    <button class="tab-btn" data-tab="chat">Chat em Tempo Real</button>
+                </div>
+
+                <!-- Conteúdo da Aba de Incorporação -->
+                <div id="incorporate-content" class="tab-content active">
+                    <h1>Incorpore seu Bot</h1>
+                    <p style="text-align: center; color: #ccc; margin-bottom: 2rem;">Cole o token do seu bot do Discord abaixo para começar a usar as ferramentas.</p>
+                    <form id="incorporate-form">
+                        <div class="form-group">
+                            <label for="bot-token">Token do Bot</label>
+                            <input type="password" id="bot-token" placeholder="Cole seu token aqui" required>
+                        </div>
+                        <button type="submit">Incorporar</button>
+                    </form>
+                </div>
+
+                <!-- Conteúdo da Aba de Chat -->
+                <div id="chat-content" class="tab-content">
+                    <h1>Chat via Discord</h1>
+                    <div class="form-group">
+                        <label for="chat-userId">ID do Usuário para Conversar</label>
+                        <input type="text" id="chat-userId" placeholder="Cole o ID e pressione Enter" pattern="\d{17,19}">
+                    </div>
+                    <div id="chat-window" class="hidden">
+                        <div id="chat-messages"></div>
+                        <form id="chat-form">
+                            <input type="text" id="chat-input" placeholder="Digite sua mensagem..." autocomplete="off" required>
+                            <button type="submit">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Painel do Bot Incorporado (inicialmente oculto) -->
+                <div id="bot-panel-content" class="tab-content">
+                    <div class="bot-profile">
+                        <img id="bot-avatar" src="" alt="Avatar do Bot">
+                        <h1 id="bot-name"></h1>
+                        <button id="disconnect-bot-btn" title="Desconectar Bot">Desconectar</button>
+                    </div>
+                    <div class="tabs">
+                         <button class="tab-btn active" data-tab="sender">Enviar Mensagens</button>
+                         <!-- Espaço para futuras abas do bot -->
+                    </div>
+                    <div id="sender-content">
+                        <form id="message-form">
+                            <div class="form-group">
+                                <label for="userId">ID do Usuário do Discord</label>
+                                <input type="text" id="userId" name="userId" placeholder="Ex: 123456789012345678" required pattern="\d{17,19}">
+                            </div>
+                            <div class="form-group">
+                                <label for="count">Quantas mensagens você quer mandar?</label>
+                                <input type="number" id="count" name="count" min="1" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Qual mensagem você quer mandar?</label>
+                                <textarea id="message" name="message" rows="4" placeholder="Digite sua mensagem aqui..." required></textarea>
+                            </div>
+                            <button type="submit">Enviar Mensagens</button>
+                        </form>
+                        <div id="status"></div>
+                        <div class="test-message-container"><button type="button" id="test-message-btn">Enviar Mensagem de Teste</button></div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Painel de Progresso/Log -->
+            <aside id="log-panel">
+                <div class="log-header">
+                    <h3>Atividade Recente</h3>
+                    <button id="clear-log-btn" title="Limpar Log">🗑️</button>
+                </div>
+                <div id="log-messages">
+                    <p class="log-entry system">Aguardando atividade...</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div class="custom-cursor"></div>
+    <script src="script.js"></script>
+</body>
+</html>
